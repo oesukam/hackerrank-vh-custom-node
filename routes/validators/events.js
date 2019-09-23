@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-export const addEvent = Joi.object().keys({
+module.exports.addEvent = Joi.object().keys({
   id: Joi.number().required(),
   type: Joi.string().required(),
   actor: Joi.object()
@@ -20,4 +20,8 @@ export const addEvent = Joi.object().keys({
   created_at: Joi.date()
     .iso()
     .required()
+});
+
+module.exports.getByActorParams = Joi.object().keys({
+  actorId: Joi.number().required()
 });
