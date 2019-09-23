@@ -136,7 +136,12 @@ const getByActor = async (req, res) => {
   return res.json(data);
 };
 
-const eraseEvents = (req, res) => {};
+const eraseEvents = async (req, res) => {
+  await db.run('DELETE FROM events');
+  await db.run('DELETE FROM actors');
+  await db.run('DELETE FROM repos');
+  return res.json([]);
+};
 
 module.exports = {
   getAllEvents: getAllEvents,
