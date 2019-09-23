@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "npm install",
+    "prestart": "npm install && npm run db:create-tables",
     "start": "node ./bin/www",
     "pretest": "npm install",
-    "test": "./node_modules/.bin/mocha test"
+    "test": "NODE_ENV=test npm run db:create-tables && NODE_ENV=test ./node_modules/.bin/mocha test",
+    "db:create-tables": "node ./db/createTables"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
@@ -26,5 +27,8 @@
     "serve-favicon": "~2.4.2",
     "sqlite3": "^3.1.9",
     "bluebird": "^3.5.0"
+  },
+  "engines": {
+    "node": ">=8.15.1"
   }
 }
