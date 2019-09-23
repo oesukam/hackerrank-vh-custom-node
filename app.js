@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 const eraseEvents = require('./routes/eraseEvents');
 const events = require('./routes/events');
-const actor = require('./routes/actors');
+const actors = require('./routes/actors');
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/erase', eraseEvents);
 app.use('/events', events);
-app.use('/actors', actor);
+app.use('/actors', actors);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
