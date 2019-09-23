@@ -18,7 +18,34 @@ const getAllActors = async (req, res) => {
   return res.json(result);
 };
 
-const updateActor = (req, res) => {};
+const updateActor = async (req, res) => {
+  const { body } = req;
+  const foundActor = await db.get(
+    `
+    SELECT * FROM actors
+    WHERE id = ?
+  `,
+    [body.id]
+  );
+
+  if (!foundActor) {
+    return res.status(404).json({ message: 'Actor not found ' });
+  }
+  const updatedActor = await db.run(
+    `
+    UPDATE actors
+    SET login = ?, avatar_url = ?
+    WHERE id = ?
+  `,
+    [
+      body.login || foundActor.login,
+      body.avatar_url || foundActor.avatar_url,
+      body.id
+    ]
+  );
+
+  return res.json({});
+};
 
 const getStreak = (req, res) => {};
 
