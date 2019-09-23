@@ -1,3 +1,4 @@
+const { orderBy } = require('lodash');
 const db = require('../db');
 const statusCodes = require('../constants/statusCodes');
 const getStreakInfo = require('../helpers/getStreakInfo');
