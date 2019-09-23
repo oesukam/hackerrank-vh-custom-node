@@ -1,5 +1,6 @@
 const db = require('../db');
 const statusCodes = require('../constants/statusCodes');
+const getStreakInfo = require('../helpers/getStreakInfo');
 
 const getAllActors = async (req, res) => {
   let result = await db.all(`
@@ -47,7 +48,28 @@ const updateActor = async (req, res) => {
   return res.json({});
 };
 
-const getStreak = (req, res) => {};
+const getStreak = async (req, res) => {
+  let result = await db.all(`
+    SELECT events.*, actors.login, actors.avatar_url FROM actors
+    JOIN events ON events.actor_id = actors.id
+    ORDER BY created_at
+	`);
+
+  result = orderBy(
+    getStreakInfo(result),
+    ['maxStreak', 'dateLastEvent', 'login'],
+    ['desc', 'desc', 'asc']
+  );
+  const cleanResult = result.map(item => {
+    delete item.currentStreak;
+    delete item.maxStreak;
+    delete item.dateLastEvent;
+    delete item.dateLatestEvent;
+    return item;
+  });
+
+  return res.json(cleanResult);
+};
 
 module.exports = {
   updateActor: updateActor,
