@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 
-const dbName = process.env.NODE_ENV === 'test' ? 'db_test' : 'DB';
+const dbName = process.env.NODE_ENV === 'test' ? 'db_test' : 'db';
 
 const db = new sqlite3.Database(`./db/${dbName}.sqlite3`, err => {
   if (err) {
