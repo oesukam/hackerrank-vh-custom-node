@@ -16,4 +16,9 @@ router
     asyncHandler(controller.addEvent)
   );
 
+router.get(
+  '/actors/:actorId',
+  joiValidator({ type: 'params', schema: joiRules.getByActorParams }),
+  asyncHandler(controller.getByActor)
+);
 module.exports = router;

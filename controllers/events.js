@@ -1,4 +1,5 @@
 const db = require('../db');
+const statusCodes = require('../constants/statusCodes');
 
 const getAllEvents = async (req, res) => {
   const result = await db.all(`
@@ -47,7 +48,7 @@ const addEvent = async (req, res) => {
   ]);
 
   if (foundEvent) {
-    return res.status(400).json({
+    return res.status(statusCodes.BAD_REQUEST).json({
       error: 'Event already exists'
     });
   }
@@ -87,10 +88,53 @@ const addEvent = async (req, res) => {
     [body.id, body.type, body.actor.id, body.repo.id, body.created_at]
   );
 
-  return res.status(201).json(body);
+  return res.status(statusCodes.CREATED).json(body);
 };
 
-const getByActor = (req, res) => {};
+const getByActor = async (req, res) => {
+  const { actorId } = req.params;
+  const result = await db.all(
+    `
+		SELECT 
+			events.*,
+			actors.login,
+			actors.avatar_url,
+			repos.name,
+			repos.url
+		FROM events
+		INNER JOIN actors on events.actor_id = actors.id
+    INNER JOIN repos on events.repo_id = repos.id
+    WHERE actors.id = ? AND events.actor_id = ?
+    ORDER BY events.id DESC
+	`,
+    [actorId, actorId]
+  );
+
+  const data = [];
+  result.forEach(row => {
+    const column = {
+      id: row.id,
+      type: row.type
+    };
+    if (row.actor_id) {
+      column.actor = {
+        id: row.actor_id,
+        login: row.login,
+        avatar_url: row.avatar_url
+      };
+    }
+    if (row.repo_id) {
+      column.repo = {
+        id: row.repo_id,
+        name: row.name,
+        url: row.url
+      };
+    }
+    column.created_at = row.created_at;
+    data.push(column);
+  });
+  return res.json(data);
+};
 
 const eraseEvents = (req, res) => {};
 
