@@ -10,6 +10,7 @@ const controller = require('../controllers/events');
 // Routes related to event
 router
   .route('/')
+  .get(asyncHandler(controller.getAllEvents))
   .post(
     joiValidator({ schema: joiRules.addEvent }),
     asyncHandler(controller.addEvent)
