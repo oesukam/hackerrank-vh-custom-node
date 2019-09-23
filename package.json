@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "prestart": "npm install && npm run db:create-tables",
-    "start": "node ./bin/www",
+    "start": "babel-node ./bin/www",
+    "dev": "babel-watch ./bin/www",
     "pretest": "npm install",
     "test": "NODE_ENV=test npm run db:create-tables && NODE_ENV=test ./node_modules/.bin/mocha test",
     "db:create-tables": "node ./db/createTables"
   },
   "dependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/runtime": "^7.6.0",
+    "babel-preset-airbnb": "^4.0.1",
     "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "chai": "^4.1.1",
@@ -31,5 +35,8 @@
   },
   "engines": {
     "node": ">=8.15.1"
+  },
+  "devDependencies": {
+    "babel-watch": "^7.0.0"
   }
 }
