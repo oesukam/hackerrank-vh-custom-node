@@ -24,7 +24,6 @@ const getStreakInfo = events => {
 
     const dateLastEvent = moment(streak.dateLastEvent, 'YYYY-MM-DD');
     const dateCurrentEvent = moment(createdAt, 'YYYY-MM-DD');
-    // const differenceInDays = dateLastEvent.diff(dateCurrentEvent, 'days');
     const differenceInDays = dateCurrentEvent.diff(dateLastEvent, 'days');
 
     if (differenceInDays > 1) {
